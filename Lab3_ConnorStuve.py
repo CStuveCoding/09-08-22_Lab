@@ -6,6 +6,7 @@ Description of what this program does
 import sys
 taxOwed = 0.0
 taxRate = 0.0 #Initialized this var to use in the nested if statement
+incomeTax = 0.0 #initializes this var in case earned income is too large
 earnedIncome = float(input("Enter the amount of income you earned in 2021: "))
 if earnedIncome < 0:
 	print("You made less than $0. Contact an accountant")
@@ -17,26 +18,42 @@ while maritalStatus != "m" and maritalStatus != "s":
 	print("you entered an invalid marital status")
 	maritalStatus = input("Type m for married and s for single: ")
 if maritalStatus == "m": #both used to find how much money the user kept this year
-  if earnedIncome <= 19900:
-    taxRate = 0.9
-  elif 1990.01 <= earnedIncome <= 81050:
-    taxRate = 0.88
-  elif 81050.01 <= earnedIncome <= 172750:
-    taxRate = 0.78
+  if earnedIncome <= 19900: #Both nested if statements to calulate the total income tax
+    taxRate = 0.1
+    incomeTax = earnedIncome * taxRate
+  elif 19901 <= earnedIncome <= 81050:
+    taxRate = 0.1
+    incomeTax = 19900 * taxRate
+    taxRate = .12
+    incomeTax += (earnedIncome - 19900) * taxRate
+  elif 81051 <= earnedIncome <= 172750:
+    taxRate = .1
+    incomeTax = 19900 * taxRate
+    taxRate = .12
+    incomeTax += 61150 * taxRate
+    taxRate = 0.22
+    incomeTax += (earnedIncome - 81050) * taxRate
   else:
     print("You make too much money. You are probably smarter than me.")
 elif maritalStatus == "s":
   if earnedIncome <= 9950:
-    taxRate = 0.9
-  elif 9950.01 <= earnedIncome <= 40525:
-    taxRate = 0.88
-  elif 40525.01 <= earnedIncome <= 86375:
-    taxRate = 0.78
+    taxRate = 0.1
+    incomeTax = earnedIncome * taxRate
+  elif 9951 <= earnedIncome <= 40525:
+    incomeTax = 9951 * taxRate
+    taxRate = .12
+    incomeTax += (earnedIncome - 9951) * taxRate
+  elif 40526 <= earnedIncome <= 86375:
+    taxRate = .1
+    incomeTax = 9950 * taxRate
+    taxRate = .12
+    incomeTax += 30575 * taxRate
+    taxRate = 0.22
+    incomeTax += (earnedIncome - 40525) * taxRate
   else:
     print("You make too much money. You are probably smarter than me.")
-income = earnedIncome * taxRate #calculates the income they kept
-moneyTaxed = earnedIncome - income # calculates the amount of money that the user got taxed
+moneyEarned = earnedIncome - incomeTax # calculates the amount of money that the user earned
 if taxRate == 0:
-  print("bROKEN cALCULATOR")
+  print(":(")
 else:
-  print("This year you earned $", earnedIncome, ". You were taxed $", moneyTaxed, ". So you earned a total of $", income, "this year.")
+  print("This year you earned $", earnedIncome, ". You were taxed $", incomeTax, ". So you earned a total of $", moneyEarned, "this year.")
